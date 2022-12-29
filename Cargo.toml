@@ -7,3 +7,6 @@ edition = "2021"
 
 [dependencies]
 cbqn = { path = "./cbqn-rs" }
+hyper = { version = "1.0.0-rc.1", features = ["full"] }
+tokio = { version = "1", features = ["full"] }
+http-body-util = "0.1.0-rc.1"
