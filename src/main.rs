@@ -1,57 +1,27 @@
-use std::fs;
-use std::env;
-use cbqn::{eval};
-use cbqn::BQNValue;
-use std::str::FromStr;
+mod response_builder;
+mod bqn_runtime;
+mod bqn_request_builder;
 
 use std::net::SocketAddr;
+
+use tokio::net::TcpListener;
 
 use http_body_util::Full;
 use hyper::body::Bytes;
 use hyper::server::conn::http1;
 use hyper::service::service_fn;
-use hyper::{Request, Response, StatusCode};
-use tokio::net::TcpListener;
-use hyper::header::{HeaderValue, HeaderName};
+use hyper::{Request, Response};
 
-fn build_response(result: Vec<BQNValue>) -> Result<Response<Full<Bytes>>, hyper::http::Error> {
-    let status_code = result[0].to_f64() as u16;
-    let headers = result[1]
-        .to_bqnvalue_vec()
-        .iter()
-        .map(|item| item.to_bqnvalue_vec().iter().map(BQNValue::to_string).collect::<Vec<String>>())
-        .collect::<Vec<Vec<String>>>();
-    let body = result[2].to_string();
-
-    let mut response = Response::new(Full::new(Bytes::from(body)));
-
-    *response.status_mut() = StatusCode::from_u16(status_code).unwrap();
-
-    for header in headers {
-        response.headers_mut().insert(
-            HeaderName::from_str(&header[0]).unwrap(),
-            HeaderValue::from_str(&header[1]).unwrap()
-        );
-    }
-
-    Ok(response)
-}
+use response_builder::build_response;
+use bqn_runtime::build_runtime;
+use bqn_request_builder::build_bqn_request;
 
 async fn run(req: Request<hyper::body::Incoming>) -> Result<Response<Full<Bytes>>, hyper::http::Error> {
-    let current_directory = env::current_dir().unwrap();
-    let current_directory_str = current_directory.to_str().unwrap();
+    let runtime = build_runtime();
 
-    let runtime = eval(
-        &(
-            "⟨ \"".to_string() +
-            current_directory_str + "/\", ⟨⟩, ⟨⟩⟩ •BQN •FChars \"" +
-            current_directory_str + "/main.bqn\""
-        )
-    );
+    let bqn_result = runtime.call1(&build_bqn_request(req)).to_bqnvalue_vec();
 
-    let result = runtime.call1(&eval(&("{ method ⇐ \"".to_string() + req.method().as_str() + "\" }"))).to_bqnvalue_vec();
-
-    build_response(result)
+    build_response(bqn_result)
 }
 
 #[tokio::main]
