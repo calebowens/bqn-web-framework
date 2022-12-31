@@ -71,6 +71,7 @@ name = "bqn_web_framework"
 version = "0.1.0"
 dependencies = [
  "cbqn",
+ "http",
  "http-body-util",
  "hyper",
  "tokio",
