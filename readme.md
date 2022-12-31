@@ -16,7 +16,7 @@ similar to the ruby rack.
 # TODO
 
 - [ ] Parameter parsing
-	- [+] Basic query parameter parsing
+	- [x] Basic query parameter parsing
 	- [ ] Query parameter parsing supporting arrays and objects
 	- [ ] JSON Body parsing
 - [ ] JSON parsing
