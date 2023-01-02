@@ -15,6 +15,7 @@ similar to the ruby rack.
 
 # TODO
 
+- [ ] URL encodeing and decoding
 - [ ] Parameter parsing
 	- [x] Basic query parameter parsing
 	- [ ] Query parameter parsing supporting arrays and objects
@@ -23,7 +24,7 @@ similar to the ruby rack.
 - [ ] JSON stringifying
 - [ ] HTML templating
 - [ ] Routing
-	- [ ] Basic routing
+	- [x] Basic routing
 	- [ ] Argument routes
 	- [ ] Optional routes? // I've never been a fan of optional routes
 	- [ ] Wildcards? // Can be useful at the end of a url. A query param could
