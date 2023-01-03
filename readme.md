@@ -21,7 +21,7 @@ similar to the ruby rack.
 	- [ ] Query parameter parsing supporting arrays and objects
 	- [ ] JSON Body parsing
 - [ ] JSON parsing
-- [ ] JSON stringifying
+- [x] JSON stringifying
 - [ ] HTML templating
 - [ ] Routing
 	- [x] Basic routing

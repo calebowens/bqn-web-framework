@@ -1,7 +1,7 @@
 query_params ← •Import "bqn/query_params.bqn"
 table ← •Import "bqn/table.bqn"
 router ← •Import "bqn/router.bqn"
-⟨InternalError⟩ ← •Import "bqn/errors.bqn"
+errors ← •Import "bqn/errors.bqn"
 
 controller ← {
 	Greet ⇐ {
@@ -36,5 +36,5 @@ controller.Greet router._get_ "/greet"
 controller.Throws router._get_ "/throws"
 
 {
-	router.HandleRequest⎊{InternalError •CurrentError} 𝕩
+	router.HandleRequest⎊{errors.InternalError •CurrentError} 𝕩
 }
